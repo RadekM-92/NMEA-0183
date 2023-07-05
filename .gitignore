@@ -16,4 +16,9 @@
 build/
 
 #Cmake
-CmakeLists.txt
+CMakeLists.txt
+
+#gitignore
+.gitignore
+
+main.c
