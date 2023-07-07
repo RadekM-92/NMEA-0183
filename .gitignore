@@ -22,3 +22,5 @@ CMakeLists.txt
 .gitignore
 
 main.c
+
+TMP.txt
