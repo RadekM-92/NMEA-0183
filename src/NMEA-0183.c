@@ -6,17 +6,17 @@
 
 
 
-
+char Msg_Data[20][20] = {0};
 
 /** Extract GGA Message to GGA_Message_Data_Raw */
-static int GGA_Message_Extract(const char *MsgIn);
+//static int GGA_Message_Extract(const char *MsgIn);
+
 
 
 
 /** Extract Message */
 static int Message_Extract(const char *MsgIn)
 {
-    char Msg_Data[20][20] = {0};
     uint8_t i, k;
     int8_t j;
 
