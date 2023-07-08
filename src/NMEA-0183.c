@@ -6,7 +6,11 @@
 #include "NMEA-0183.h"
 #include "NMEA-0183-types.h"
 
+#define MAX_MESSAGES 10
+
 typedef int8_t (*callback_t)(char *ptr);
+
+callback_t GP_Messages[MAX_MESSAGES] = {0};
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
@@ -17,18 +21,32 @@ static int Message_Extract(const char *MsgIn, callback_t callback) ;
 
 int8_t GGA_callback(char * ptr)
 {
-    int8_t IsGGA = memcmp(ptr, "$GPGGA", 6);
-    if (0 != IsGGA)
-    {
-        return -1;
-    }
-    else
+    int8_t IsGGA = memcmp(ptr, "$GPGGA", 6) == 0 ? 1 : 0;
+
+    if (IsGGA)
     {
         memcpy(GGA_Msg_Raw_Data.ID, ptr, 20);
         memcpy(GGA_Msg_Raw_Data.UTC_Time, ptr + 20, 20);
     }
+    else
+    {
+        return -1;
+    }
 }
 
+int8_t MessageReconize(char *ptr, uint8_t max_messages)
+{
+    uint8_t i;
+    uint8_t MsgReconized;
+
+    for(i=0; i<max_messages; i++)
+    {
+        MsgReconized = memcmp(ptr, "$GPGGA", 6) == 0 ? 1 : 0;
+
+        
+        
+    }
+}
 
 /** Extract Message */
 static int Message_Extract(const char *MsgIn, callback_t callback) 
