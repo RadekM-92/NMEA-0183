@@ -20,12 +20,13 @@ char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
 };
 
 typedef int8_t (*callback_t)(char *ptr);
+typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
 
 callback_t GP_Messages[MAX_MESSAGES] = {0};
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
-static int Message_Extract(const char *MsgIn, callback_t callback) ;
+static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback); 
 
 /** Extract GGA Message to GGA_Message_Data_Raw */
 //static int GGA_Message_Extract(const char *MsgIn);
@@ -64,22 +65,9 @@ int8_t GGA_callback(char * ptr)
     }
 }
 
-int8_t MessageReconize(char *ptr, uint8_t max_messages)
-{
-    uint8_t i;
-    uint8_t MsgReconized;
-
-    for(i=0; i<max_messages; i++)
-    {
-        MsgReconized = memcmp(ptr, "$GPGGA", 6) == 0 ? 1 : 0;
-
-        
-        
-    }
-}
 
 /** Extract Message */
-static int Message_Extract(const char *MsgIn, callback_t callback) 
+static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback) 
 {
     uint8_t i, k;
     int8_t j;
@@ -98,7 +86,8 @@ static int Message_Extract(const char *MsgIn, callback_t callback)
             }
             Msg_Data[k][j] = *(MsgIn + i);
         }
-        callback(Msg_Data[0]);
+        if (MsgReconizeID(MsgIn, MsgIDs[0]) == 0)
+            callback(Msg_Data[0]);
     }
     else
     {
@@ -110,7 +99,7 @@ char *GGA_Msg = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,
 
 void test(void)
 {
-    Message_Extract(GGA_Msg, GGA_callback);
+    Message_Extract(GGA_Msg, ReconizeMessageID, GGA_callback);
     
     int i;
     printf("%s\n", GGA_Msg);
