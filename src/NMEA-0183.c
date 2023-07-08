@@ -1,24 +1,34 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <stdio.h>
+
 #include "NMEA-0183.h"
 #include "NMEA-0183-types.h"
 
+typedef void (*callback_t)(char *ptr);
 
+GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
-char Msg_Data[20][20] = {0};
+static int Message_Extract(const char *MsgIn, callback_t callback) ;
 
 /** Extract GGA Message to GGA_Message_Data_Raw */
 //static int GGA_Message_Extract(const char *MsgIn);
 
-
+void GGA_callback(char * ptr)
+{
+    memcpy(GGA_Msg_Raw_Data.ID, ptr, 20);
+    memcpy(GGA_Msg_Raw_Data.UTC_Time, ptr + 20, 20);
+}
 
 
 /** Extract Message */
-static int Message_Extract(const char *MsgIn)
+static int Message_Extract(const char *MsgIn, callback_t callback) 
 {
     uint8_t i, k;
     int8_t j;
+
+    char Msg_Data[20][20] = {0};
 
     if ('$' == *(MsgIn))
     {
@@ -32,9 +42,38 @@ static int Message_Extract(const char *MsgIn)
             }
             Msg_Data[k][j] = *(MsgIn + i);
         }
+        callback(Msg_Data[0]);
     }
     else
     {
         return -1;
     }    
+}
+
+char *GGA_Msg = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
+
+void test(void)
+{
+    Message_Extract(GGA_Msg, GGA_callback);
+    
+    int i;
+    printf("%s\n", GGA_Msg);
+    printf("\n\n");
+    printf("%s\n", GGA_Msg_Raw_Data.ID);
+    printf("%s\n", GGA_Msg_Raw_Data.UTC_Time       );
+    printf("%s\n", GGA_Msg_Raw_Data.Latitude       );
+    printf("%s\n", GGA_Msg_Raw_Data.N_S            );
+    printf("%s\n", GGA_Msg_Raw_Data.Longitude      );
+    printf("%s\n", GGA_Msg_Raw_Data.E_W            );
+    printf("%s\n", GGA_Msg_Raw_Data.PositionFixID  );
+    printf("%s\n", GGA_Msg_Raw_Data.SatellitesUsed );
+    printf("%s\n", GGA_Msg_Raw_Data.HDOP           );
+    printf("%s\n", GGA_Msg_Raw_Data.MSL_Altitude   );
+    printf("%s\n", GGA_Msg_Raw_Data.units1         );
+    printf("%s\n", GGA_Msg_Raw_Data.GeoidSeparation);
+    printf("%s\n", GGA_Msg_Raw_Data.units2         );
+    printf("%s\n", GGA_Msg_Raw_Data.AgeOfDiffCorr  );
+    printf("%s\n", GGA_Msg_Raw_Data.DiffRefStationID);
+    printf("%s\n", GGA_Msg_Raw_Data.CheckSum       );
+
 }
