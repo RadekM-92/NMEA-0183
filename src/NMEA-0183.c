@@ -6,7 +6,7 @@
 #include "NMEA-0183.h"
 #include "NMEA-0183-types.h"
 
-typedef void (*callback_t)(char *ptr);
+typedef int8_t (*callback_t)(char *ptr);
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
@@ -15,10 +15,18 @@ static int Message_Extract(const char *MsgIn, callback_t callback) ;
 /** Extract GGA Message to GGA_Message_Data_Raw */
 //static int GGA_Message_Extract(const char *MsgIn);
 
-void GGA_callback(char * ptr)
+int8_t GGA_callback(char * ptr)
 {
-    memcpy(GGA_Msg_Raw_Data.ID, ptr, 20);
-    memcpy(GGA_Msg_Raw_Data.UTC_Time, ptr + 20, 20);
+    int8_t IsGGA = memcmp(ptr, "$GPGGA", 6);
+    if (0 != IsGGA)
+    {
+        return -1;
+    }
+    else
+    {
+        memcpy(GGA_Msg_Raw_Data.ID, ptr, 20);
+        memcpy(GGA_Msg_Raw_Data.UTC_Time, ptr + 20, 20);
+    }
 }
 
 
