@@ -6,7 +6,18 @@
 #include "NMEA-0183.h"
 #include "NMEA-0183-types.h"
 
-#define MAX_MESSAGES 10
+#define MAX_MESSAGES 6
+#define ID_LEN 6
+
+char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
+{
+    "$GPGGA",
+    "$GPGLL",
+    "$GPGSA",
+    "$GPGSV",
+    "GPRMC",
+    "GPVTG"
+};
 
 typedef int8_t (*callback_t)(char *ptr);
 
@@ -18,6 +29,25 @@ static int Message_Extract(const char *MsgIn, callback_t callback) ;
 
 /** Extract GGA Message to GGA_Message_Data_Raw */
 //static int GGA_Message_Extract(const char *MsgIn);
+
+int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
+{
+    uint8_t i;
+    uint8_t MsgReconized;
+
+    for(i=0; i<MAX_MESSAGES; i++)
+    {
+        MsgReconized = memcmp(MsgIn, MsgIDs + i*ID_LEN, 6) == 0 ? 1 : 0;
+        if (MsgReconized)
+        {
+            return i;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+}
 
 int8_t GGA_callback(char * ptr)
 {
