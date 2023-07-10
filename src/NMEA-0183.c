@@ -15,8 +15,8 @@ char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
     "$GPGLL",
     "$GPGSA",
     "$GPGSV",
-    "GPRMC",
-    "GPVTG"
+    "$GPRMC",
+    "$GPVTG"
 };
 
 typedef int8_t (*callback_t)(char *ptr);
