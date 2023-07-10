@@ -6,8 +6,9 @@
 #include "NMEA-0183.h"
 #include "NMEA-0183-types.h"
 
-#define MAX_MESSAGES 6
-#define ID_LEN 6
+
+typedef int8_t (*callback_t)(char *ptr);
+typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
 
 char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
 {
@@ -19,19 +20,15 @@ char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
     "$GPVTG"
 };
 
-typedef int8_t (*callback_t)(char *ptr);
-typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
+
 
 callback_t GP_Messages[MAX_MESSAGES] = {0};
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
-static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback); 
 
-/** Extract GGA Message to GGA_Message_Data_Raw */
-//static int GGA_Message_Extract(const char *MsgIn);
-
-int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
+/** Reconize Message by compare MsgIn and MsgIDs */
+static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
 {
     uint8_t i;
     uint8_t MsgReconized;
@@ -66,7 +63,7 @@ int8_t GGA_callback(char * ptr)
 }
 
 
-/** Extract Message */
+/** Extract Message to data structs*/
 static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback) 
 {
     uint8_t i, k;

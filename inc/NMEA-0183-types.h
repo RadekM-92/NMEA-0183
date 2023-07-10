@@ -1,6 +1,9 @@
 #ifndef _NMEA_0183_TYPES_
 #define _NMEA_0183_TYPES_
 
+#define MAX_MESSAGES 6
+#define ID_LEN 6
+
 
 /** GGA Message raw - Global Positioning System fixed data */
 typedef struct
@@ -22,6 +25,13 @@ typedef struct
     char DiffRefStationID[20]; /** DPGS ID, 0000-no DGPS */
     char CheckSum[20]; /** Checksum - XOR operation on all bytes from '$' to '*' */
 } GGA_Message_Data_Raw_t;
+
+
+
+static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs);
+
+static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback); 
+
 
 
 #endif
