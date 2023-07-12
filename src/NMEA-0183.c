@@ -19,7 +19,15 @@ char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
     "$GPVTG"
 };
 
-
+Parse_t ParsePointer[MAX_MESSAGES] = 
+{
+    GGA_Parse,
+    GLL_Parse,
+    GSA_Parse,
+    GSV_Parse,
+    RMC_Parse,
+    VTG_Parse
+};
 
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
@@ -46,14 +54,13 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
 }
 
 /** GGA message parse */
-static int8_t GGA_Parse(char *Msg)
+static int8_t GGA_Parse(const char *MsgExtracted)
 {
-    int8_t IsGGA = memcmp(Msg, "$GPGGA", 6) == 0 ? 1 : 0;
-
+    int8_t IsGGA = memcmp(MsgExtracted, "$GPGGA", 6) == 0 ? 1 : 0;
     if (IsGGA)
     {
-        memcpy(GGA_Msg_Raw_Data.ID, Msg, 20);
-        memcpy(GGA_Msg_Raw_Data.UTC_Time, Msg + 20, 20);
+        memcpy(GGA_Msg_Raw_Data.ID, MsgExtracted, 20);
+        memcpy(GGA_Msg_Raw_Data.UTC_Time, MsgExtracted + 20, 20);
     }
     else
     {
@@ -61,29 +68,29 @@ static int8_t GGA_Parse(char *Msg)
     }
 }
 /** GLL message parse */
-static int8_t GLL_Parse(char *Msg)
+static int8_t GLL_Parse(const char *MsgExtracted)
 {
 
 }
 /** GSA message parse */
-static int8_t GSA_Parse(char *Msg)
+static int8_t GSA_Parse(const char *MsgExtracted)
 {
 
 }
 /** GSV message parse */
-static int8_t GSV_Parse(char *Msg)
+static int8_t GSV_Parse(const char *MsgExtracted)
 {
 
 }
 /** RMC message parse */
-static int8_t RMC_Parse(char *Msg)
+static int8_t RMC_Parse(const char *MsgExtracted)
 {
 
 }
 /** VTG message parse */
-static int8_t VTG_Parse(char *Msg)
+static int8_t VTG_Parse(const char *MsgExtracted)
 {
-    
+
 }
 
 
@@ -95,7 +102,7 @@ static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
 
     if (IsCorrectMsgID)
     {
-
+        ParsePointer[MsgID](MsgIn);
     }
     else
     {
@@ -124,7 +131,7 @@ static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, 
             Msg_Data[k][j] = *(MsgIn + i);
         }
 
-        MsgParse(MsgIn, MsgReconizeID(MsgIn, MsgIDs[0]));
+        MsgParse(Msg_Data[0], MsgReconizeID(MsgIn, MsgIDs[0]));
     }
     else
     {
@@ -141,6 +148,8 @@ void test(void)
 
 
     Message_Extract(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
+
+
     printf("%s\n", GGA_Msg_Example);
     printf("\n\n");
     printf("%s\n", GGA_Msg_Raw_Data.ID);
