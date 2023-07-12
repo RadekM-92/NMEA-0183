@@ -47,5 +47,13 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs);
 static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse); 
 static int8_t Message_Parse(const char *MsgIn, int8_t MsgID);
 static int8_t GGA_Parse(char *Msg);
+static int8_t GLL_Parse(char *Msg);
+static int8_t GSA_Parse(char *Msg);
+static int8_t GSV_Parse(char *Msg);
+static int8_t RMC_Parse(char *Msg);
+static int8_t VTG_Parse(char *Msg);
+
+
+
 
 #endif
