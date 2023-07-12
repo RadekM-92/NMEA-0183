@@ -60,6 +60,33 @@ static int8_t GGA_Parse(char *Msg)
         return -1;
     }
 }
+/** GLL message parse */
+static int8_t GLL_Parse(char *Msg)
+{
+
+}
+/** GSA message parse */
+static int8_t GSA_Parse(char *Msg)
+{
+
+}
+/** GSV message parse */
+static int8_t GSV_Parse(char *Msg)
+{
+
+}
+/** RMC message parse */
+static int8_t RMC_Parse(char *Msg)
+{
+
+}
+/** VTG message parse */
+static int8_t VTG_Parse(char *Msg)
+{
+    
+}
+
+
 
 /** Parse Message */
 static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
