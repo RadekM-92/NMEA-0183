@@ -7,8 +7,7 @@
 #include "NMEA-0183-types.h"
 
 
-typedef int8_t (*callback_t)(char *ptr);
-typedef int8_t (*MsgReconizeID_t)(const char *MsgIn, const char *MsgIDs);
+
 
 char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
 {
@@ -92,14 +91,14 @@ static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, cal
     }    
 }
 
-char *GGA_Msg = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
+char *GGA_Msg_test = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
 
 void test(void)
 {
-    Message_Extract(GGA_Msg, ReconizeMessageID, GGA_callback);
+    Message_Extract(GGA_Msg_test, ReconizeMessageID, GGA_callback);
     
     int i;
-    printf("%s\n", GGA_Msg);
+    printf("%s\n", GGA_Msg_test);
     printf("\n\n");
     printf("%s\n", GGA_Msg_Raw_Data.ID);
     printf("%s\n", GGA_Msg_Raw_Data.UTC_Time       );

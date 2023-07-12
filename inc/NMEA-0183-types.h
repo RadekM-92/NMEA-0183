@@ -26,7 +26,19 @@ typedef struct
     char CheckSum[20]; /** Checksum - XOR operation on all bytes from '$' to '*' */
 } GGA_Message_Data_Raw_t;
 
+/** Message IDs */
+typedef enum
+{
+    GGA_Msg = 0,
+    GLL_Msg = 1,
+    GSA_Msg = 2,
+    GSV_Msg = 3,
+    RMC_Msg = 4,
+    VTG_Msg = 5,
 
+    Unknow_Msg = -1
+
+} MessageIDs_t;
 
 typedef int8_t (*callback_t)(char *ptr);
 typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
