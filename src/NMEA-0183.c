@@ -45,15 +45,15 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
     }
 }
 
-/**  */
-int8_t GGA_callback(char * ptr)
+/** GGA message parse */
+static int8_t GGA_Parse(char *Msg)
 {
-    int8_t IsGGA = memcmp(ptr, "$GPGGA", 6) == 0 ? 1 : 0;
+    int8_t IsGGA = memcmp(Msg, "$GPGGA", 6) == 0 ? 1 : 0;
 
     if (IsGGA)
     {
-        memcpy(GGA_Msg_Raw_Data.ID, ptr, 20);
-        memcpy(GGA_Msg_Raw_Data.UTC_Time, ptr + 20, 20);
+        memcpy(GGA_Msg_Raw_Data.ID, Msg, 20);
+        memcpy(GGA_Msg_Raw_Data.UTC_Time, Msg + 20, 20);
     }
     else
     {

@@ -46,8 +46,6 @@ typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
 static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs);
 static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse); 
 static int8_t Message_Parse(const char *MsgIn, int8_t MsgID);
-
-
-int8_t GGA_callback(char * ptr);
+static int8_t GGA_Parse(char *Msg);
 
 #endif
