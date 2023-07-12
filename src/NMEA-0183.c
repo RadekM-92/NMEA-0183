@@ -111,7 +111,7 @@ static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
 }
 
 /** Extract Message to data structs*/
-static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse) 
+static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse) 
 {
     uint8_t i, k;
     int8_t j;
@@ -147,7 +147,7 @@ void test(void)
     char *GGA_Msg_Example = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
 
 
-    Message_Extract(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
+    Message_Read(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
 
 
     printf("%s\n", GGA_Msg_Example);
