@@ -110,7 +110,11 @@ static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
     } 
 }
 
-/** Extract Message to data structs*/
+/** Message_Read 
+ * MsgIn - input message pointer,
+ * MsgReconizeID - message ID comparison function callback
+ * MsgParse - message parse function callback
+*/
 static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse) 
 {
     uint8_t i, k;
