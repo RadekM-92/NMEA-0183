@@ -21,7 +21,6 @@ char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
 
 
 
-callback_t GP_Messages[MAX_MESSAGES] = {0};
 
 GGA_Message_Data_Raw_t GGA_Msg_Raw_Data = {0};
 
@@ -46,6 +45,7 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
     }
 }
 
+/**  */
 int8_t GGA_callback(char * ptr)
 {
     int8_t IsGGA = memcmp(ptr, "$GPGGA", 6) == 0 ? 1 : 0;
@@ -61,9 +61,23 @@ int8_t GGA_callback(char * ptr)
     }
 }
 
+/** Parse Message */
+static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
+{
+    uint8_t IsCorrectMsgID = MsgID >= 0 && MsgID <= MAX_MESSAGES;
+
+    if (IsCorrectMsgID)
+    {
+
+    }
+    else
+    {
+        return -1;
+    } 
+}
 
 /** Extract Message to data structs*/
-static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback) 
+static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, MsgParse_t MsgParse) 
 {
     uint8_t i, k;
     int8_t j;
@@ -82,8 +96,8 @@ static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, 
             }
             Msg_Data[k][j] = *(MsgIn + i);
         }
-        if (MsgReconizeID(MsgIn, MsgIDs[0]) == 0)
-            callback(Msg_Data[0]);
+
+        MsgParse(MsgIn, MsgReconizeID(MsgIn, MsgIDs[0]));
     }
     else
     {
@@ -91,14 +105,16 @@ static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, 
     }    
 }
 
-char *GGA_Msg_test = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
+
+
 
 void test(void)
 {
-    Message_Extract(GGA_Msg_test, ReconizeMessageID, GGA_callback);
-    
-    int i;
-    printf("%s\n", GGA_Msg_test);
+    char *GGA_Msg_Example = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
+
+
+    Message_Extract(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
+    printf("%s\n", GGA_Msg_Example);
     printf("\n\n");
     printf("%s\n", GGA_Msg_Raw_Data.ID);
     printf("%s\n", GGA_Msg_Raw_Data.UTC_Time       );
