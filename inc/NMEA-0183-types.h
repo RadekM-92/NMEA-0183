@@ -28,6 +28,9 @@ typedef struct
 
 
 
+typedef int8_t (*callback_t)(char *ptr);
+typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
+
 static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs);
 
 static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback); 

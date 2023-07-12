@@ -8,7 +8,7 @@
 
 
 typedef int8_t (*callback_t)(char *ptr);
-typedef int8_t (*MsgReconizeID_t)(const char *, const char *);
+typedef int8_t (*MsgReconizeID_t)(const char *MsgIn, const char *MsgIDs);
 
 char MsgIDs[MAX_MESSAGES][ID_LEN+1] =
 {
