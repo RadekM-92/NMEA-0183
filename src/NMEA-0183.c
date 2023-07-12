@@ -41,7 +41,7 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
         }
         else
         {
-            return -1;
+            return Unknow_Msg;
         }
     }
 }
