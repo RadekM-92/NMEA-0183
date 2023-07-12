@@ -63,7 +63,7 @@ int8_t GGA_callback(char * ptr)
 
 
 /** Extract Message to data structs*/
-static int Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback) 
+static int8_t Message_Extract(const char *MsgIn, MsgReconizeID_t MsgReconizeID, callback_t callback) 
 {
     uint8_t i, k;
     int8_t j;
