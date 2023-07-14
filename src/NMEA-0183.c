@@ -56,11 +56,42 @@ static int8_t ReconizeMessageID(const char *MsgIn, const char *MsgIDs)
 /** GGA message parse */
 static int8_t GGA_Parse(const char *MsgExtracted)
 {
-    int8_t IsGGA = memcmp(MsgExtracted, "$GPGGA", 6) == 0 ? 1 : 0;
+    int8_t IsGGA = memcmp(MsgExtracted, MsgIDs[GGA_Msg], GGA_ID_LEN) == 0 ? 1 : 0;
+    int16_t seek = 0;
     if (IsGGA)
     {
-        memcpy(GGA_Msg_Raw_Data.ID, MsgExtracted, 20);
-        memcpy(GGA_Msg_Raw_Data.UTC_Time, MsgExtracted + 20, 20);
+        memcpy(GGA_Msg_Raw_Data.ID, MsgExtracted, GGA_ID_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.UTC_Time, MsgExtracted + seek, GGA_UTC_TIME_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.Latitude, MsgExtracted + seek, GGA_LATITUDE_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.N_S, MsgExtracted + seek, GGA_N_S_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.Longitude, MsgExtracted + seek, GGA_LONGITUDE_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.E_W, MsgExtracted + seek, GGA_E_W_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.PositionFixID, MsgExtracted + seek, GGA_POSITION_FIX_ID_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.SatellitesUsed, MsgExtracted + seek, GGA_SATTELITES_USED_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.HDOP, MsgExtracted + seek, GGA_HDOP_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.MSL_Altitude, MsgExtracted + seek, GGA_MSL_ALTITUDE_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.units1, MsgExtracted + seek, GGA_UNITS1_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.GeoidSeparation, MsgExtracted + seek, GGA_GEOID_SEPARATION_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.units2, MsgExtracted + seek, GGA_UNITS2_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.AgeOfDiffCorr, MsgExtracted + seek, GGA_AGE_OF_DIFF_CORR_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.DiffRefStationID, MsgExtracted + seek, GGA_DIFF_REF_STATION_ID_LEN);
+        seek += 20;
+        memcpy(GGA_Msg_Raw_Data.CheckSum, MsgExtracted + seek, GGA_CHECK_SUM_LEN);
+       
     }
     else
     {
