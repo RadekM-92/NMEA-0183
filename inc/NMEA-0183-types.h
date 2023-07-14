@@ -3,6 +3,9 @@
 
 #define MAX_MESSAGES 6
 #define ID_LEN 6
+#define MESSAGE_MAX_LEN 82
+#define DATA_FIELD_MAX_LEN 20
+#define FIELDS_MAX 20
 
 
 #define GGA_ID_LEN 6

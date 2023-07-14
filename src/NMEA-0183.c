@@ -150,19 +150,23 @@ static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, Msg
 {
     uint8_t i, k;
     int8_t j;
+    uint8_t IsSeparatorSign;
+    uint8_t IsMessageStartSign = '$' == *(MsgIn);
+    char Msg_Data[FIELDS_MAX][DATA_FIELD_MAX_LEN] = {0};
 
-    char Msg_Data[20][20] = {0};
-
-    if ('$' == *(MsgIn))
+    if (IsMessageStartSign)
     {
-        for(i=0, j=0, k=0; i<82; i++, j++)
+        for(i=0, j=0, k=0; i<MESSAGE_MAX_LEN; i++, j++)
         {
-            if (',' == *(MsgIn + i))
+            IsSeparatorSign = ',' == *(MsgIn + i) || '*' == *(MsgIn + i); 
+            
+            if (IsSeparatorSign)
             {
                 k++;
                 j=-1;
                 continue;
             }
+
             Msg_Data[k][j] = *(MsgIn + i);
         }
 
