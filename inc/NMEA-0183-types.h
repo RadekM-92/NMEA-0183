@@ -5,6 +5,23 @@
 #define ID_LEN 6
 
 
+#define GGA_ID_LEN 6
+#define GGA_UTC_TIME_LEN 10
+#define GGA_LATITUDE_LEN 9
+#define GGA_N_S_LEN 1
+#define GGA_LONGITUDE_LEN 10
+#define GGA_E_W_LEN 1
+#define GGA_POSITION_FIX_ID_LEN 1
+#define GGA_SATTELITES_USED_LEN 2
+#define GGA_HDOP_LEN 3
+#define GGA_MSL_ALTITUDE_LEN 5
+#define GGA_UNITS1_LEN 1
+#define GGA_GEOID_SEPARATION_LEN 1
+#define GGA_UNITS2_LEN 1
+#define GGA_AGE_OF_DIFF_CORR_LEN 1
+#define GGA_DIFF_REF_STATION_ID_LEN 4
+#define GGA_CHECK_SUM_LEN 2
+
 /** GGA Message raw - Global Positioning System fixed data */
 typedef struct
 {
