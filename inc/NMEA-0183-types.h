@@ -25,22 +25,22 @@
 /** GGA Message raw - Global Positioning System fixed data */
 typedef struct
 {
-    char ID[GGA_ID_LEN];                            /** Message ID */
-    char UTC_Time[GGA_UTC_TIME_LEN];                /** Time in format hhmmss.sss */
-    char Latitude[GGA_LATITUDE_LEN];                /** Latitude in format ddmm.mmmm */
-    char N_S[GGA_N_S_LEN];                          /** N-north, S-south */
-    char Longitude[GGA_LONGITUDE_LEN];              /** Longitude in format dddmm.mmmm */
-    char E_W[GGA_E_W_LEN];                          /** E-east, W-west */
-    char PositionFixID[GGA_POSITION_FIX_ID_LEN];    /** 0-Not available, 1-SPS, 2-DGPS, 3-PPS */
-    char SatellitesUsed[GGA_SATTELITES_USED_LEN];   /** Range 0..12 */
-    char HDOP[GGA_HDOP_LEN];                        /** Horizontal Dilution of Precision */
-    char MSL_Altitude[GGA_MSL_ALTITUDE_LEN];        /** MSL Altitude; */
-    char units1[GGA_UNITS1_LEN];                    /** MSL_Altitude units, M-meters */
-    char GeoidSeparation[GGA_GEOID_SEPARATION_LEN]; /** Geoid-to-ellipsoid separation */
-    char units2[GGA_UNITS2_LEN];                    /** GeoidSeparation units, M-meters */
-    char AgeOfDiffCorr[GGA_AGE_OF_DIFF_CORR_LEN];   /** Null fields when DGPS is not used*/
-    char DiffRefStationID[GGA_DIFF_REF_STATION_ID_LEN]; /** DPGS ID, 0000-no DGPS */
-    char CheckSum[GGA_CHECK_SUM_LEN];               /** Checksum - XOR operation on all bytes from '$' to '*' */
+    char ID[GGA_ID_LEN + 1];                            /** Message ID */
+    char UTC_Time[GGA_UTC_TIME_LEN + 1];                /** Time in format hhmmss.sss */
+    char Latitude[GGA_LATITUDE_LEN + 1];                /** Latitude in format ddmm.mmmm */
+    char N_S[GGA_N_S_LEN + 1];                          /** N-north, S-south */
+    char Longitude[GGA_LONGITUDE_LEN + 1];              /** Longitude in format dddmm.mmmm */
+    char E_W[GGA_E_W_LEN + 1];                          /** E-east, W-west */
+    char PositionFixID[GGA_POSITION_FIX_ID_LEN + 1];    /** 0-Not available, 1-SPS, 2-DGPS, 3-PPS */
+    char SatellitesUsed[GGA_SATTELITES_USED_LEN + 1];   /** Range 0..12 */
+    char HDOP[GGA_HDOP_LEN + 1];                        /** Horizontal Dilution of Precision */
+    char MSL_Altitude[GGA_MSL_ALTITUDE_LEN + 1];        /** MSL Altitude; */
+    char units1[GGA_UNITS1_LEN + 1];                    /** MSL_Altitude units, M-meters */
+    char GeoidSeparation[GGA_GEOID_SEPARATION_LEN + 1]; /** Geoid-to-ellipsoid separation */
+    char units2[GGA_UNITS2_LEN + 1];                    /** GeoidSeparation units, M-meters */
+    char AgeOfDiffCorr[GGA_AGE_OF_DIFF_CORR_LEN + 1];   /** Null fields when DGPS is not used*/
+    char DiffRefStationID[GGA_DIFF_REF_STATION_ID_LEN + 1]; /** DPGS ID, 0000-no DGPS */
+    char CheckSum[GGA_CHECK_SUM_LEN + 1];               /** Checksum - XOR operation on all bytes from '$' to '*' */
 } GGA_Message_Data_Raw_t;
 
 /** Message IDs */
