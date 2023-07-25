@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <string.h>
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "NMEA-0183.h"
@@ -123,8 +123,71 @@ static int8_t VTG_Parse(const char *MsgExtracted)
 {
 
 }
+/** Calculate and compare checksum */
+static int8_t IsCheckSumOk(const char *MsgIn)
+{
+    uint8_t IsMessageStartSign=0;
+    uint8_t IsMessageStopSign=0;
+    uint8_t IsMessageEnd=0;
+    uint8_t i, j;
+    uint8_t CheckSumCalc=0;
+    int8_t CheckSumStatus=0;
+    char CheckSumRead[3] = {0};
+    int CheckSumReadNum;
 
+    IsMessageStartSign = '$' == *(MsgIn) ? 1 : 0;
 
+    if (IsMessageStartSign)
+    {
+        for(i=1, j=0; i<MESSAGE_MAX_LEN; i++)
+        {
+            if ('*' == *(MsgIn +i))
+            {
+                IsMessageStopSign = 1;
+            }
+
+            if (IsMessageStopSign && 2==j)
+            {
+                IsMessageEnd = 1;
+            }
+
+            if (IsMessageStopSign)
+            {
+                if (IsMessageEnd)
+                {
+                    CheckSumReadNum = atoi(CheckSumRead);
+                    
+                    if (CheckSumReadNum == (int)CheckSumCalc)
+                    {
+                        CheckSumStatus = 1;
+                    }
+                    else
+                    {
+                        CheckSumStatus = -1;
+                    }
+
+                    break;
+                }
+                else
+                {
+                    CheckSumRead[j] = *(MsgIn + i + 1);
+                    j++;
+                }
+            } 
+            else
+            {
+                CheckSumCalc ^= *(MsgIn + i);
+            }
+        }
+    }
+    else
+    {
+        CheckSumStatus = -2;
+    }
+
+    return CheckSumStatus;
+
+}
 
 /** Parse Message */
 static int8_t Message_Parse(const char *MsgIn, int8_t MsgID)
