@@ -215,29 +215,41 @@ static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, Msg
     int8_t j;
     uint8_t IsSeparatorSign;
     uint8_t IsMessageStartSign = '$' == *(MsgIn);
+    uint8_t CheckSumOk;
     char Msg_Data[FIELDS_MAX][DATA_FIELD_MAX_LEN] = {0};
+
+    CheckSumOk = IsCheckSumOk(MsgIn) > 0 ? 1 : 0;
 
     if (IsMessageStartSign)
     {
-        for(i=0, j=0, k=0; i<MESSAGE_MAX_LEN; i++, j++)
-        {
-            IsSeparatorSign = ',' == *(MsgIn + i) || '*' == *(MsgIn + i); 
-            
-            if (IsSeparatorSign)
+         if (CheckSumOk)
+         {
+            for(i=0, j=0, k=0; i<MESSAGE_MAX_LEN; i++, j++)
             {
-                k++;
-                j=-1;
-                continue;
+                IsSeparatorSign = ',' == *(MsgIn + i) || '*' == *(MsgIn + i); 
+                
+                if (IsSeparatorSign)
+                {
+                    k++;
+                    j=-1;
+                    continue;
+                }
+
+                Msg_Data[k][j] = *(MsgIn + i);
             }
 
-            Msg_Data[k][j] = *(MsgIn + i);
-        }
+            MsgParse(Msg_Data[0], MsgReconizeID(MsgIn, MsgIDs[0]));
 
-        MsgParse(Msg_Data[0], MsgReconizeID(MsgIn, MsgIDs[0]));
+            return 1;
+         }
+         else
+         {
+            return -1;
+         }
     }
     else
     {
-        return -1;
+        return -2;
     }    
 }
 
@@ -247,11 +259,11 @@ static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, Msg
 void test(void)
 {
     char *GGA_Msg_Example = "$GPGGA,092842.094,5215.2078,N,02054.3681,E,1,06,1.7,138.5,M,,,,0000*09";
+    int8_t Read_Status; 
 
+    Read_Status = Message_Read(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
 
-    Message_Read(GGA_Msg_Example, ReconizeMessageID, Message_Parse);
-
-
+    printf("Read status = %d\n", Read_Status);
     printf("%s\n", GGA_Msg_Example);
     printf("\n\n");
     printf("%s\n", GGA_Msg_Raw_Data.ID);
