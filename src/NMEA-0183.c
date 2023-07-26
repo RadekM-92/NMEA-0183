@@ -124,14 +124,14 @@ static int8_t VTG_Parse(const char *MsgExtracted)
 
 }
 /** Calculate and compare checksum */
-static int8_t IsCheckSumOk(const char *MsgIn)
+static uint8_t IsCheckSumOk(const char *MsgIn)
 {
     uint8_t IsMessageStartSign=0;
     uint8_t IsMessageStopSign=0;
     uint8_t IsMessageEnd=0;
     uint8_t i, j;
     uint8_t CheckSumCalc=0;
-    int8_t CheckSumStatus=0;
+    uint8_t CheckSumStatus=0;
     char CheckSumRead[3] = {0};
     int CheckSumReadNum;
 
@@ -163,7 +163,7 @@ static int8_t IsCheckSumOk(const char *MsgIn)
                     }
                     else
                     {
-                        CheckSumStatus = -1;
+                        CheckSumStatus = 0;
                     }
 
                     break;
@@ -182,7 +182,7 @@ static int8_t IsCheckSumOk(const char *MsgIn)
     }
     else
     {
-        CheckSumStatus = -2;
+        CheckSumStatus = 0;
     }
 
     return CheckSumStatus;
@@ -215,14 +215,11 @@ static int8_t Message_Read(const char *MsgIn, MsgReconizeID_t MsgReconizeID, Msg
     int8_t j;
     uint8_t IsSeparatorSign;
     uint8_t IsMessageStartSign = '$' == *(MsgIn);
-    uint8_t CheckSumOk;
     char Msg_Data[FIELDS_MAX][DATA_FIELD_MAX_LEN] = {0};
-
-    CheckSumOk = IsCheckSumOk(MsgIn) > 0 ? 1 : 0;
 
     if (IsMessageStartSign)
     {
-         if (CheckSumOk)
+         if (IsCheckSumOk(MsgIn))
          {
             for(i=0, j=0, k=0; i<MESSAGE_MAX_LEN; i++, j++)
             {

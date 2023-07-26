@@ -73,7 +73,7 @@ static int8_t GSA_Parse(const char *MsgExtracted);
 static int8_t GSV_Parse(const char *MsgExtracted);
 static int8_t RMC_Parse(const char *MsgExtracted);
 static int8_t VTG_Parse(const char *MsgExtracted);
-static int8_t IsCheckSumOk(const char *MsgIn);
+static uint8_t IsCheckSumOk(const char *MsgIn);
 
 
 
